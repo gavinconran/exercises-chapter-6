@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "chapter-6"
 version = "0.1"
-dependencies = ["numpy.testing", "pytest", "numpy"]
+dependencies = ["numpy"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["nonlinear_solvers"]
