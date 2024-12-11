@@ -80,12 +80,11 @@ def bisection(f, a, b, eps=1.0e-5, max_its=20):
     float
         The approximate root computed using bisection.
     """
-    its = 0
-
-    if f(a) * f(b) > 0:
-        raise ValueError(f'f(x_0) = {f(a):.5} and f(x_1) = {f(b):.5}')    
+    its = 0  
     c = (a + b) / 2
     while abs(f(c)) > eps:
+        if f(a) * f(b) > 0:
+            raise ValueError(f'f(x_0) and f(x_1) do not differ in sign')  
         c = (a + b) / 2   
         if f(c) == 0:
             break
@@ -97,8 +96,6 @@ def bisection(f, a, b, eps=1.0e-5, max_its=20):
         its += 1
     if its >= max_its:
         raise  ConvergenceError(f'max_its of {max_its} has been exceeded')
-    if f(a) * f(b) > 0:
-        raise ValueError(f'f(x_0) = {f(a):.5} and f(x_1) = {f(b):.5}')
     return c
 
 
