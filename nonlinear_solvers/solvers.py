@@ -126,18 +126,13 @@ def solve(f, df, x_0, x_1, eps=1.0e-5, max_its_n=20, max_its_b=20):
         The approximate root.
     """
     try:
-        print("Trying Newton's Method")
         root_n = newton_raphson(f, df, x_0, eps, max_its_n)
     except ConvergenceError:
-        print('Newton did not work')
         try:
-            print("Trying Bisection method")
             root_b = bisection(f, x_0, x_1, eps, max_its_b)
         except ValueError:
-            print("Bisection did not work")
+            pass
         else:
-            print('Bisection worked')
             return root_b    
     else:
-        print('Newton worked')
         return root_n
