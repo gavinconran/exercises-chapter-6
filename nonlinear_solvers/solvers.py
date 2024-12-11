@@ -7,12 +7,6 @@ class ConvergenceError(Exception):
     pass
 
 
-class ValueError(Exception):
-    """Exception raised as f(x_0) and f(x_1) do not differ in sign."""
-
-    pass
-
-
 def newton_raphson(f, df, x_0, eps=1.0e-5, max_its=20):
     """Solve a nonlinear equation using Newton-Raphson iteration.
 
@@ -80,24 +74,25 @@ def bisection(f, a, b, eps=1.0e-5, max_its=20):
     float
         The approximate root computed using bisection.
     """
-    its = 0  
+    its = 0
     c = (a + b) / 2
     while abs(f(c)) > eps:
-        if f(a) * f(b) > 0:
-            raise ValueError(f'f(x_0) and f(x_1) do not differ in sign')  
-        c = (a + b) / 2   
+        # ValueError checked during while loop
+        if f(a) * f(b) >= 0:
+            raise ValueError(f'f(x_0) and f(x_1) are not of the same sign')
+        c = (a + b) / 2
         if f(c) == 0:
             break
         elif f(a) * f(c) < 0:
             b = c
         else:
-            a = c 
+            a = c
         c = (a + b) / 2
         its += 1
+    # ConvergenceError checked after while loop terminates    
     if its >= max_its:
         raise  ConvergenceError(f'max_its of {max_its} has been exceeded')
     return c
-
 
 def solve(f, df, x_0, x_1, eps=1.0e-5, max_its_n=20, max_its_b=20):
     """Solve a nonlinear equation.
