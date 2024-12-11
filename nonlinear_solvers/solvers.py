@@ -7,6 +7,12 @@ class ConvergenceError(Exception):
     pass
 
 
+class ValueError(Exception):
+    """Exception raised as f(x_0) and f(x_1) do not differ in sign."""
+
+    pass
+
+
 def newton_raphson(f, df, x_0, eps=1.0e-5, max_its=20):
     """Solve a nonlinear equation using Newton-Raphson iteration.
 
@@ -49,7 +55,7 @@ def newton_raphson(f, df, x_0, eps=1.0e-5, max_its=20):
     return x_r_plus_1
 
 
-def bisection(f, x_0, x_1, eps=1.0e-5, max_its=20):
+def bisection(f, a, b, eps=1.0e-5, max_its=20):
     """Solve a nonlinear equation using bisection.
 
     Solve f==0 using bisection starting with the interval [x_0, x_1]. f(x_0)
@@ -59,9 +65,9 @@ def bisection(f, x_0, x_1, eps=1.0e-5, max_its=20):
     ----------
     f : function(x: float) -> float
         The function whose root is being found.
-    x_0 : float
+    a : float
         The left end of the initial bisection interval.
-    x_1 : float
+    b : float
         The right end of the initial bisection interval.
     eps : float
         The solver tolerance. Convergence is achieved when abs(f(x)) < eps.
@@ -74,8 +80,26 @@ def bisection(f, x_0, x_1, eps=1.0e-5, max_its=20):
     float
         The approximate root computed using bisection.
     """
-    # Delete these two lines when implementing the method.
-    raise NotImplementedError
+    its = 0
+
+    if f(a) * f(b) > 0:
+        raise ValueError(f'f(x_0) = {f(a):.5} and f(x_1) = {f(b):.5}')    
+    c = (a + b) / 2
+    while abs(f(c)) > eps:
+        c = (a + b) / 2   
+        if f(c) == 0:
+            break
+        elif f(a) * f(c) < 0:
+            b = c
+        else:
+            a = c 
+        c = (a + b) / 2
+        its += 1
+    if its >= max_its:
+        raise  ConvergenceError(f'max_its of {max_its} has been exceeded')
+    if f(a) * f(b) > 0:
+        raise ValueError(f'f(x_0) = {f(a):.5} and f(x_1) = {f(b):.5}')
+    return c
 
 
 def solve(f, df, x_0, x_1, eps=1.0e-5, max_its_n=20, max_its_b=20):
