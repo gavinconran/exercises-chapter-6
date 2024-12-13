@@ -10,7 +10,7 @@ dependencies = ["numpy", "ipython"]
 [tool.hatch.build.targets.wheel]
 packages = ["nonlinear_solvers"]
 
-### https://github.com/object-oriented-python/object-oriented-programming/blob/master/pyproject.toml
+#### https://github.com/object-oriented-python/object-oriented-programming/blob/master/pyproject.toml
 [project.optional-dependencies]
 all = [
     "flake8",
